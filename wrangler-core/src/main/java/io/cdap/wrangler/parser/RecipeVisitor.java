@@ -326,4 +326,25 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
     int column = ctx.getStart().getCharPositionInLine();
     return new SourceInfo(lineno, column, text);
   }
+  /**
+ * A Directive can consist of ByteSize field. This visitor method extracts
+ * the byte size value into a token type <code>ByteSize</code>.
+ */
+@Override
+public RecipeSymbol.Builder visitByteSize(DirectivesParser.ByteSizeContext ctx) {
+  String raw = ctx.getText();  // e.g., "10MB"
+  builder.addToken(new io.cdap.wrangler.api.parser.ByteSize(raw));
+  return builder;
+}
+
+/**
+ * A Directive can consist of TimeDuration field. This visitor method extracts
+ * the time duration value into a token type <code>TimeDuration</code>.
+ */
+@Override
+public RecipeSymbol.Builder visitTimeDuration(DirectivesParser.TimeDurationContext ctx) {
+  String raw = ctx.getText();  // e.g., "15s"
+  builder.addToken(new io.cdap.wrangler.api.parser.TimeDuration(raw));
+  return builder;
+}
 }

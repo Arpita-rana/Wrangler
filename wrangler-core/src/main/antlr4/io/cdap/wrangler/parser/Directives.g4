@@ -8,10 +8,9 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations under the License.
  */
 
 grammar Directives;
@@ -31,10 +30,9 @@ options {
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations under the License.
  */
 }
 
@@ -57,6 +55,8 @@ directive
     | text
     | number
     | bool
+    | byteSize         // ✅ New
+    | timeDuration     // ✅ New
     | column
     | colList
     | numberList
@@ -167,6 +167,14 @@ bool
  : Bool
  ;
 
+byteSize           // ✅ New parser rule
+ : BYTE_SIZE
+ ;
+
+timeDuration       // ✅ New parser rule
+ : TIME_DURATION
+ ;
+
 condition
  : OBrace (~CBrace | condition)* CBrace
  ;
@@ -195,7 +203,6 @@ identifierList
  : Identifier (',' Identifier)*
  ;
 
-
 /*
  * Following are the Lexer Rules used for tokenizing the recipe.
  */
@@ -215,42 +222,57 @@ StartsWith : '=^';
 NotStartsWith : '!^';
 EndsWith : '=$';
 NotEndsWith : '!$';
-PlusEqual : '+=';
-SubEqual : '-=';
-MulEqual : '*=';
-DivEqual : '/=';
-PerEqual : '%=';
-AndEqual : '&=';
-OrEqual  : '|=';
-XOREqual : '^=';
-Pow      : '^';
-External : '!';
-GT       : '>';
-LT       : '<';
-Add      : '+';
-Subtract : '-';
-Multiply : '*';
-Divide   : '/';
-Modulus  : '%';
-OBracket : '[';
-CBracket : ']';
-OParen   : '(';
-CParen   : ')';
-Assign   : '=';
-Comma    : ',';
-QMark    : '?';
-Colon    : ':';
-Dot      : '.';
-At       : '@';
-Pipe     : '|';
+PlusEqual : '+=' ;
+SubEqual : '-=' ;
+MulEqual : '*=' ;
+DivEqual : '/=' ;
+PerEqual : '%=' ;
+AndEqual : '&=' ;
+OrEqual  : '|=' ;
+XOREqual : '^=' ;
+Pow      : '^' ;
+External : '!' ;
+GT       : '>' ;
+LT       : '<' ;
+Add      : '+' ;
+Subtract : '-' ;
+Multiply : '*' ;
+Divide   : '/' ;
+Modulus  : '%' ;
+OBracket : '[' ;
+CBracket : ']' ;
+OParen   : '(' ;
+CParen   : ')' ;
+Assign   : '=' ;
+Comma    : ',' ;
+QMark    : '?' ;
+Colon    : ':' ;
+Dot      : '.' ;
+At       : '@' ;
+Pipe     : '|' ;
 BackSlash: '\\';
 Dollar   : '$';
 Tilde    : '~';
 
-
 Bool
  : 'true'
  | 'false'
+ ;
+
+BYTE_SIZE                // ✅ New lexer rule
+ : [0-9]+('.'[0-9]+)? BYTE_UNIT
+ ;
+
+fragment BYTE_UNIT       // ✅ Byte unit suffixes
+ : 'B' | 'KB' | 'MB' | 'GB' | 'TB' | 'PB'
+ ;
+
+TIME_DURATION            // ✅ New lexer rule
+ : [0-9]+('.'[0-9]+)? TIME_UNIT
+ ;
+
+fragment TIME_UNIT       // ✅ Time unit suffixes
+ : 'ns' | 'us' | 'ms' | 's' | 'm' | 'h'
  ;
 
 Number
@@ -270,8 +292,8 @@ Column
  ;
 
 String
- : '\'' ( EscapeSequence | ~('\'') )* '\''
- | '"'  ( EscapeSequence | ~('"') )* '"'
+ : '\'' ( EscapeSequence | ~('\'')) * '\''
+ | '"'  ( EscapeSequence | ~('"')) * '"'
  ;
 
 EscapeSequence

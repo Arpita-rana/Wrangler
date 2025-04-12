@@ -57,6 +57,16 @@ public final class RecipeCompiler implements Compiler {
       throw new CompileException(e.getMessage(), e);
     }
   }
+  @Test
+public void testAggregateStatsParse() throws Exception {
+  String[] recipe = {
+    "aggregate-stats :size :duration :total_mb :total_sec"
+  };
+  List<Row> rows = ... // prepare some test input
+  List<Row> result = TestingRig.execute(recipe, rows);
+  ...
+}
+
 
   private CompileStatus compile(CharStream stream) throws CompileException {
     try {

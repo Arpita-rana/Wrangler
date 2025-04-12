@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Data Prep
 
 ![cm-available](https://cdap-users.herokuapp.com/assets/cm-available.svg)
@@ -215,3 +216,6 @@ Cask is a trademark of Cask Data, Inc. All rights reserved.
 
 Apache, Apache HBase, and HBase are trademarks of The Apache Software Foundation. Used with
 permission. No endorsement by The Apache Software Foundation is implied by the use of these marks.
+=======
+# Wrangler
+>>>>>>> c9be21ae234b6f9d37cfb489642f389e9303f09a
